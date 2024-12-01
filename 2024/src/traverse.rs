@@ -3,6 +3,7 @@ pub struct Point {
     pub x: i32,
     pub y: i32,
 }
+
 impl std::ops::Add for Point {
     type Output = Point;
     fn add(self, rhs: Self) -> Self::Output {
@@ -48,7 +49,11 @@ impl CharGrid {
         let width = out.grid[0].len();
         for row in out.grid.iter() {
             if row.len() != width {
-                panic!("Mismatching widths! First row had width {} and this row had width {}.", width, row.len());
+                panic!(
+                    "Mismatching widths! First row had width {} and this row had width {}.",
+                    width,
+                    row.len()
+                );
             }
         }
         out
@@ -59,8 +64,9 @@ impl CharGrid {
     pub fn height(&self) -> i32 {
         self.grid.len() as i32
     }
-    pub fn get<T>(&self, pos: T) -> Option<char> 
-        where T: Into<Point>
+    pub fn get<T>(&self, pos: T) -> Option<char>
+    where
+        T: Into<Point>,
     {
         let point: Point = pos.into();
         if point.x < 0 || point.y < 0 || point.x >= self.width() || point.y >= self.height() {

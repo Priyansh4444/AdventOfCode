@@ -3,7 +3,6 @@ use std::cmp::Ordering;
 #[derive(Debug, Clone, Copy, PartialOrd, PartialEq)]
 pub struct OrdFloat(f64);
 
-
 impl From<f64> for OrdFloat {
     fn from(value: f64) -> Self {
         OrdFloat(value)
@@ -16,4 +15,4 @@ impl Ord for OrdFloat {
     }
 }
 
-impl Eq for OrdFloat { }
+impl Eq for OrdFloat {}
