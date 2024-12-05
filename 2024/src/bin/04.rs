@@ -36,20 +36,18 @@ fn part1(input: &str) -> usize {
     let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
     let height = grid.len();
     let width = grid[0].len();
-
+    let directions = [
+        (0, 1),
+        (0, -1),
+        (1, 0),
+        (-1, 0),
+        (1, 1),
+        (1, -1),
+        (-1, 1),
+        (-1, -1),
+    ];
     for row in 0..height {
         for col in 0..width {
-            // Check all 8 directions
-            let directions = [
-                (0, 1),
-                (0, -1),
-                (1, 0),
-                (-1, 0),
-                (1, 1),
-                (1, -1),
-                (-1, 1),
-                (-1, -1),
-            ];
             // Loop through all 8 directions moving through them seeing if the word exists or its reverse exist
             for &(row_dir, col_dir) in directions.iter() {
                 if check_direction(&grid, row, col, row_dir, col_dir, &word) {
@@ -126,7 +124,6 @@ fn check_direction_2(
             [(col as i32 + (col_dir * i as i32)) as usize] += 1;
     }
 }
-
 
 #[test]
 fn test_part2() {
