@@ -31,7 +31,7 @@ fn part1(input: &str) -> usize {
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(include_str!("../data/03_test.txt")), 161);
+    assert_eq!(part1(include_str!("../data/test/03.txt")), 161);
 }
 
 fn part2(input: &str) -> usize {
@@ -82,6 +82,7 @@ fn part2(input: &str) -> usize {
 #[test]
 fn test_part2() {
     assert_eq!(
+        // This test case is not the same
         part2("xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))"),
         48
     );

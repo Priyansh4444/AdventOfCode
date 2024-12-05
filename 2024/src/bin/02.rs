@@ -46,7 +46,7 @@ fn part1(input: &str) -> usize {
 
 #[test]
 fn test_part1() {
-    assert_eq!(part1(include_str!("../data/02_test.txt")), 2);
+    assert_eq!(part1(include_str!("../data/test/02.txt")), 2);
 }
 
 fn part2(input: &str) -> usize {
@@ -80,5 +80,5 @@ fn part2(input: &str) -> usize {
 #[cfg(test)]
 #[test]
 fn test_part2() {
-    assert_eq!(part2(include_str!("../data/02_test.txt")), 4);
+    assert_eq!(part2(include_str!("../data/test/02.txt")), 4);
 }
