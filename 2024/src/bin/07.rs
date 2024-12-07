@@ -47,7 +47,6 @@ fn can_make_value(target: usize, numbers: &[usize], part2: bool) -> bool {
         }
         expressions = new_expressions;
     }
-
     expressions.iter().any(|(val, _)| *val == target)
 }
 
