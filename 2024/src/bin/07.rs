@@ -5,6 +5,7 @@ fn main() {
 }
 
 fn part1(input: &str) -> usize {
+    let now = std::time::Instant::now();
     let mut sum = 0;
     for line in input.lines() {
         let parts: Vec<&str> = line.split(": ").collect();
@@ -17,6 +18,7 @@ fn part1(input: &str) -> usize {
             sum += rhs;
         }
     }
+    println!("Time: {:?}", now.elapsed());
     sum
 }
 
@@ -28,11 +30,11 @@ fn can_make_value(target: usize, numbers: &[usize], part2: bool) -> bool {
     if part2 {
         ops.push("||");
     }
-    let mut expressions = vec![(numbers[0], vec![])];
+    let mut expressions = vec![numbers[0]];
 
     for &num in &numbers[1..] {
         let mut new_expressions = vec![];
-        for (val, ops_used) in expressions {
+        for val in expressions {
             for &op in &ops {
                 let new_val = match op {
                     "+" => val + num,
@@ -40,17 +42,18 @@ fn can_make_value(target: usize, numbers: &[usize], part2: bool) -> bool {
                     "||" => (val.to_string() + &num.to_string()).parse().unwrap(),
                     _ => unreachable!(),
                 };
-                let mut new_ops: Vec<&str> = ops_used.clone();
-                new_ops.push(op);
-                new_expressions.push((new_val, new_ops));
+                if new_val <= target {
+                    new_expressions.push(new_val);
+                }
             }
         }
         expressions = new_expressions;
     }
-    expressions.iter().any(|(val, _)| *val == target)
+    expressions.iter().any(|val| *val == target)
 }
 
 fn part2(input: &str) -> usize {
+    let now: std::time::Instant = std::time::Instant::now();
     let mut sum = 0;
     for line in input.lines() {
         let parts: Vec<&str> = line.split(": ").collect();
@@ -63,6 +66,7 @@ fn part2(input: &str) -> usize {
             sum += rhs;
         }
     }
+    println!("Time: {:?}", now.elapsed());
     sum
 }
 
