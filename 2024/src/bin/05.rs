@@ -2,8 +2,11 @@ use std::collections::{HashMap, HashSet};
 
 fn main() {
     let input: &str = include_str!("../data/05.txt");
+    let now = std::time::Instant::now();
     println!("Answer to part1: {}", part1(input));
+    println!("Time: {:?}", now.elapsed());
     println!("Answer to part2: {}", part2(input));
+    println!("Time: {:?}", now.elapsed());
 }
 
 fn check_sequence_valid(sequence: &[i32], rules: &HashMap<i32, HashSet<i32>>) -> bool {
