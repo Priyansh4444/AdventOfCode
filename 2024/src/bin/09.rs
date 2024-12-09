@@ -27,12 +27,8 @@ fn part1(input: &str) -> usize {
     let mut file_id = 0;
     // instead of . we are using Some() and None
     for (file_size, free_space) in pairs {
-        for _ in 0..file_size {
-            disk.push(Some(file_id));
-        }
-        for _ in 0..free_space {
-            disk.push(None);
-        }
+        disk.extend(std::iter::repeat(Some(file_id)).take(file_size));
+        disk.extend(std::iter::repeat(None).take(free_space));
         file_id += 1;
     }
 
@@ -76,21 +72,21 @@ fn part2(input: &str) -> usize {
         .chunks(2)
         .map(|c| (c[0], c[1]))
         .collect::<Vec<(usize, usize)>>();
-    let mut disk = Vec::new();
-    let mut file_sizes = Vec::new();
-    let mut file_id = 0;
-    let mut free_sizes = Vec::new();
-    for (file_size, free_space) in pairs {
-        file_sizes.push(file_size);
-        free_sizes.push(free_space);
-        for _ in 0..file_size {
-            disk.push(Some(file_id));
+        let mut disk = Vec::new();
+        let mut file_sizes = Vec::new();
+        let mut file_id = 0;
+        let mut free_sizes = Vec::new();
+        for (file_size, free_space) in pairs {
+            file_sizes.push(file_size);
+            free_sizes.push(free_space);
+            for _ in 0..file_size {
+                disk.push(Some(file_id));
+            }
+            for _ in 0..free_space {
+                disk.push(None);
+            }
+            file_id += 1;
         }
-        for _ in 0..free_space {
-            disk.push(None);
-        }
-        file_id += 1;
-    }
 
     // check in decreasing order of file_id
     for current_id in (0..file_id).rev() {
