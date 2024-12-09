@@ -102,7 +102,8 @@ fn part2(input: &str) -> usize {
     for antennas in freq_groups.values() {
         for i in 0..antennas.len() {
             for j in (i + 1)..antennas.len() {
-                let nodes = calculate_antinodes_2(antennas[i], antennas[j], width, height, &mut grid);
+                let nodes =
+                    calculate_antinodes_2(antennas[i], antennas[j], width, height, &mut grid);
                 antinode_positions.extend(nodes);
             }
         }

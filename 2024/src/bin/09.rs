@@ -1,14 +1,22 @@
 fn main() {
-    let input: &str = include_str!("../data/09.txt");
+    let input: &str = &include_str!("../data/09.txt").trim().replace("\r", "");
+    let now = std::time::Instant::now();
     println!("Answer to part1: {}", part1(input));
+    let elapsed = now.elapsed();
+    println!("Time: {:?}", elapsed);
+    let now = std::time::Instant::now();
     println!("Answer to part2: {}", part2(input));
+    let elapsed = now.elapsed();
+    println!("Time: {:?}", elapsed);
 }
 
 fn part1(input: &str) -> usize {
+    
     0
 }
 
 fn part2(input: &str) -> usize {
+    
     0
 }
 
