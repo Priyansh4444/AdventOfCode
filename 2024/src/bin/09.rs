@@ -10,6 +10,8 @@ fn main() {
     println!("Time: {:?}", elapsed);
 }
 
+// Check ben's part2 solution
+
 fn part1(input: &str) -> usize {
     let input = input.to_string() + "0";
     let pairs = input
