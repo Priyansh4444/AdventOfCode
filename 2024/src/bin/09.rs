@@ -10,7 +10,7 @@ fn main() {
     println!("Time: {:?}", elapsed);
 }
 
-// Check ben's part2 solution
+// Check ben's part2 solution its crakced
 
 fn part1(input: &str) -> usize {
     let input = input.to_string() + "0";
