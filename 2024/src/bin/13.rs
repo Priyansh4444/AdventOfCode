@@ -88,8 +88,10 @@ fn parse_input_2(input: &str) -> Vec<ClawMachine> {
         } else if line.starts_with("Prize:") {
             if let Some(ref mut machine) = current_machine {
                 let parts: Vec<&str> = line.split(", ").collect();
-                let x = parts[0].split("=").nth(1).unwrap().parse::<i64>().unwrap() + 10000000000000;
-                let y = parts[1].split("=").nth(1).unwrap().parse::<i64>().unwrap() + 10000000000000;
+                let x =
+                    parts[0].split("=").nth(1).unwrap().parse::<i64>().unwrap() + 10000000000000;
+                let y =
+                    parts[1].split("=").nth(1).unwrap().parse::<i64>().unwrap() + 10000000000000;
                 machine.prize = (x, y);
             }
         }
@@ -110,19 +112,11 @@ fn solve_linear_equations(
     b2: i64,
     c2: i64,
     part2: bool,
-) -> Option<(i128, i128)> {
-    let determinant = a1 as i128 * b2 as i128 - a2 as i128 * b1 as i128;
+) -> Option<(i64, i64)> {
+    let determinant = a1 * b2 - a2 * b1;
     if determinant == 0 {
         return None;
     }
-
-    // Convert all numbers to i128 early to avoid overflow
-    let a1 = a1 as i128;
-    let b1 = b1 as i128;
-    let c1 = c1 as i128;
-    let a2 = a2 as i128;
-    let b2 = b2 as i128;
-    let c2 = c2 as i128;
 
     // Check if solution exists by ensuring the determinant divides evenly
     if (c1 * b2 - c2 * b1) % determinant != 0 || (a1 * c2 - a2 * c1) % determinant != 0 {
@@ -146,7 +140,7 @@ fn solve_linear_equations(
     None
 }
 
-fn can_reach_prize(machine: &ClawMachine, part2: bool) -> Option<(i128, i128)> {
+fn can_reach_prize(machine: &ClawMachine, part2: bool) -> Option<(i64, i64)> {
     // We need to solve:
     // a*button_a.x + b*button_b.x = prize.x
     // a*button_a.y + b*button_b.y = prize.y
@@ -160,11 +154,11 @@ fn can_reach_prize(machine: &ClawMachine, part2: bool) -> Option<(i128, i128)> {
         part2,
     )
 }
-fn calculate_tokens(a_presses: i128, b_presses: i128) -> i128 {
+fn calculate_tokens(a_presses: i64, b_presses: i64) -> i64 {
     a_presses * 3 + b_presses
 }
 
-fn part1(input: &str) -> i128 {
+fn part1(input: &str) -> i64 {
     let machines = parse_input(input);
     let mut total_tokens = 0;
 
@@ -177,7 +171,7 @@ fn part1(input: &str) -> i128 {
     total_tokens
 }
 
-fn part2(input: &str) -> i128 {
+fn part2(input: &str) -> i64 {
     let machines = parse_input_2(input);
     let mut total_tokens = 0;
 
