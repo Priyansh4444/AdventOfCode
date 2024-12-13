@@ -109,8 +109,11 @@ fn search_area(
 
 fn sides_count(visited: &HashSet<(usize, usize)>) -> usize {
     let mut seen = HashSet::new();
+    // Visited is the region with all the elements
     for &(row, col) in visited {
+        // going in every direction till we find the first elements out of bounds
         for (dr, dc) in [(-1, 0), (0, 1), (1, 0), (0, -1)] {
+            // if it already has the element we have visited continue
             if visited.contains(&(row + dr as usize, col + dc as usize)) {
                 continue;
             }
@@ -125,6 +128,8 @@ fn sides_count(visited: &HashSet<(usize, usize)>) -> usize {
                 next_row += dc as usize;
                 next_col += dr as usize;
             }
+            // Find the point which is the corner of the edge you are on and add it to ensure we won't re add it
+            // also note the direction since a different direction edge to the same point should count
             seen.insert((next_row, next_col, dr, dc));
         }
     }
