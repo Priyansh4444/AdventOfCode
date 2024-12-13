@@ -1,10 +1,14 @@
 fn main() {
     let input: &str = &include_str!("../data/13.txt").replace("\r", "");
+    let now = std::time::Instant::now();
     println!("Answer to part1: {}", part1(input));
+    let elapsed = now.elapsed();
+    println!("Elapsed: {:?}", elapsed);
+    let now = std::time::Instant::now();
     println!("Answer to part2: {}", part2(input));
+    let elapsed = now.elapsed();
+    println!("Elapsed: {:?}", elapsed);
 }
-
-use std::collections::HashSet;
 
 #[derive(Debug)]
 struct ClawMachine {
@@ -68,7 +72,6 @@ fn parse_input_2(input: &str) -> Vec<ClawMachine> {
             }
             continue;
         }
-
         if line.starts_with("Button A:") {
             let parts: Vec<&str> = line.split(", ").collect();
             let x = parts[0].split("+").nth(1).unwrap().parse::<i64>().unwrap();
