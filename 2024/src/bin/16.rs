@@ -1,5 +1,24 @@
-use std::collections::HashSet;
-use std::collections::VecDeque;
+use std::cmp::Ordering;
+use std::collections::{BinaryHeap, HashSet, VecDeque};
+
+#[derive(Copy, Clone, Eq, PartialEq)]
+struct State {
+    cost: i32,
+    position: (usize, usize),
+    direction: usize,
+}
+
+impl Ord for State {
+    fn cmp(&self, other: &Self) -> Ordering {
+        other.cost.cmp(&self.cost) // Reverse for min-heap
+    }
+}
+
+impl PartialOrd for State {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        Some(self.cmp(other))
+    }
+}
 
 struct Bot {
     location: (usize, usize),
@@ -46,63 +65,89 @@ impl Bot {
     }
 }
 
+fn get_next_moves(
+    pos: (usize, usize),
+    dir: usize,
+    grid: &[Vec<char>],
+) -> Vec<((usize, usize), usize)> {
+    let directions: [(i32, i32); 4] = [(0, 1), (1, 0), (0, -1), (-1, 0)];
+    let mut moves = Vec::new();
+
+    // Can only turn 90 degrees or continue straight
+    for new_dir in [(dir + 3) % 4, dir, (dir + 1) % 4].iter() {
+        let (dr, dc) = directions[*new_dir];
+        let new_r = pos.0 as i32 + dr;
+        let new_c = pos.1 as i32 + dc;
+
+        if new_r >= 0
+            && new_r < grid.len() as i32
+            && new_c >= 0
+            && new_c < grid[0].len() as i32
+            && grid[new_r as usize][new_c as usize] != '#'
+        {
+            moves.push(((new_r as usize, new_c as usize), *new_dir));
+        }
+    }
+    moves
+}
+
 fn main() {
+    let time = std::time::Instant::now();
     let input = include_str!("../data/16.txt");
     println!("Part 1: {}", part1(input));
+    println!("Time: {}ms", time.elapsed().as_millis());
     println!("Part 2: {}", part2(input));
 }
 
 fn part1(input: &str) -> i32 {
-    // Parse input into grid
     let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
     let rows = grid.len();
     let columns = grid[0].len();
 
-    let mut scores = vec![vec![i32::MAX; columns]; rows];
+    let start = find_char(&grid, 'S').unwrap_or((rows - 2, 1));
+    let end = find_char(&grid, 'E').unwrap_or((1, columns - 2));
 
-    // Find start and end positions
-    let start_location = find_char(&grid, 'S').unwrap_or((rows - 2, 1));
-    let end_location = find_char(&grid, 'E').unwrap_or((1, columns - 2));
+    let mut costs = vec![vec![[i32::MAX; 4]; columns]; rows];
+    let mut heap = BinaryHeap::new();
 
-    let mut queue = VecDeque::new();
-    queue.push_back(Bot {
-        location: start_location,
+    // Start facing east (direction 0)
+    costs[start.0][start.1][0] = 0;
+    heap.push(State {
+        cost: 0,
+        position: start,
         direction: 0,
-        rows,
-        columns,
-        score: 0,
-        visited: vec![],
     });
-    scores[start_location.0][start_location.1] = 0;
 
-    // BFS
-    while let Some(bot) = queue.pop_front() {
-        for ((new_row, new_column), new_direction) in bot.next_locations() {
-            if grid[new_row][new_column] == '#' {
-                continue;
-            }
+    while let Some(State {
+        cost,
+        position,
+        direction,
+    }) = heap.pop()
+    {
+        if position == end {
+            return cost;
+        }
 
-            let mut new_score = bot.score + 1;
-            if new_direction != bot.direction {
-                new_score += 1000;
-            }
+        if cost > costs[position.0][position.1][direction] {
+            continue;
+        }
 
-            if new_score < scores[new_row][new_column] {
-                scores[new_row][new_column] = new_score;
-                queue.push_back(Bot {
-                    location: (new_row, new_column),
-                    direction: new_direction,
-                    rows,
-                    columns,
-                    score: new_score,
-                    visited: vec![],
+        // Try all valid moves from current position
+        for (new_pos, new_dir) in get_next_moves(position, direction, &grid) {
+            let new_cost = cost + if new_dir == direction { 1 } else { 1001 };
+
+            if new_cost < costs[new_pos.0][new_pos.1][new_dir] {
+                heap.push(State {
+                    cost: new_cost,
+                    position: new_pos,
+                    direction: new_dir,
                 });
+                costs[new_pos.0][new_pos.1][new_dir] = new_cost;
             }
         }
     }
-    scores[end_location.0][end_location.1]
+    i32::MAX
 }
-
 fn part2(input: &str) -> i32 {
     let grid: Vec<Vec<char>> = input.lines().map(|line| line.chars().collect()).collect();
     let rows = grid.len();
