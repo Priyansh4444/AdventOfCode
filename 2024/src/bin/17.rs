@@ -134,7 +134,6 @@ fn find(target: &[u64], ans: u64, program: &[u64]) -> Option<u64> {
         }
         // Check if output matches target and recurse
         if let Some(out) = output {
-
             if out == target[target.len() - 1] {
                 if let Some(sub) = find(&target[..target.len() - 1], a, &program) {
                     return Some(sub);
