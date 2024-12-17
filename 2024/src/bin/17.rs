@@ -96,10 +96,6 @@ fn find(target: &[u64], ans: u64, program: &[u64]) -> Option<u64> {
 
     for trial in 0..8 {
         let a = ans << 3 | trial;
-        let mut cool = false;
-        if ans == 1563 {
-            cool = true;
-        }
         let mut b = 0;
         let mut c = 0;
         let mut output = None;
