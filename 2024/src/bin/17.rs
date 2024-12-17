@@ -105,9 +105,6 @@ fn find(target: &[u64], ans: u64, program: &[u64]) -> Option<u64> {
         for ip in (0..program.len() - 2).step_by(2) {
             let opcode = program[ip];
             let operand = program[ip + 1];
-            if cool {
-                println!("{}: {} {} {} {} {}", ip, opcode, operand, a, b, c);
-            }
             match opcode {
                 0 => {
                     assert!(!adv3, "program has multiple ADVs");
