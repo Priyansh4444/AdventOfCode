@@ -89,6 +89,15 @@ fn part1(input: &str) -> String {
     output.join(",")
 }
 
+// Intuitions:
+
+// Since there is no jump or advance instructions till the end of the loop (assumption) we can decompile the question and see basically for which octet will the last part of the output
+// be satisfied. We try every since combination of last 3 bits as octet (we are going backwards with A Register since that is the only thing being printed on the screen, we are reverse engineering it)
+// The only operation that is done on A is a left shift or divide by 8  so the only reverse part is the multiplication by 8.
+// Essentially we are testing out our new a just to see in our program if the last value is correct (this type of program is called a quine (program outputs itself))
+// Once we find the last three bits of A that satisfy the last part of the program, since the entire program is just a dowhile loop, we need to find the next octet or the next 3 bits after that (trial)
+// and keep doing this so that the entire program can be printed out.
+// This works since in the original program the do while loop is like cutting three bits in each iteration, while here we are adding three bits till the input == output
 fn find(target: &[u64], ans: u64, program: &[u64]) -> Option<u64> {
     if target.is_empty() {
         return Some(ans);
