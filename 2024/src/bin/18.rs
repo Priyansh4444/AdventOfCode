@@ -16,6 +16,7 @@ fn parse_coordinates(input: &str, limit: usize) -> HashSet<(usize, usize)> {
         })
         .collect()
 }
+
 fn find_shortest_path(
     corrupted: &HashSet<(usize, usize)>,
     width: usize,
