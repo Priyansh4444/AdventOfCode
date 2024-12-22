@@ -61,7 +61,6 @@ impl Pad {
                 if let Some(&cost) = cache.get(s) {
                     return cost;
                 }
-
                 let mut chars = s.chars();
                 let first = chars.next().unwrap();
                 let mut cost = calc_movement_cost(grid, next, 'A', first);
