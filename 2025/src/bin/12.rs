@@ -56,7 +56,7 @@ fn part1(input: &str) -> usize {
     regions.into_iter().filter(Region::definitely_fits).count()
 }
 
-fn part2(input: &str) -> usize {
+fn part2(_: &str) -> usize {
     0
 }
 
